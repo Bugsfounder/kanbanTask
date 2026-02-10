@@ -1,0 +1,145 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.container {
+    margin: 20px 0px;
+    width: 80%;
+    margin: auto;
+}
+
+/* Input section */
+.addTaskInputContainer {
+    display: flex;
+    margin-bottom: 20px;
+
+    padding: 10px 0px;
+}
+
+
+.enterTask {
+    width: 80%;
+
+}
+
+.enterTask,
+.type {
+    display: flex;
+    align-items: center;
+
+}
+
+.inputTask {
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    width: 100%;
+
+    border-right: none;
+
+
+}
+
+.inputTask:focus {
+    border-color: #6366f1;
+}
+
+.type select {
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+
+    border-left: none;
+
+}
+
+/* Task board */
+.taskTypeContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+/* Common column styles */
+.todoContainer,
+.inProgressContainer,
+.doneContainer {
+    padding: 12px;
+    border-radius: 8px;
+    min-height: 150px;
+}
+
+/* Individual column colors */
+.todoContainer {
+    background: #f1f5f9;
+}
+
+.inProgressContainer {
+    background: #fff7ed;
+}
+
+.doneContainer {
+    background: #ecfdf5;
+}
+
+/* Task item */
+.todoContainer p,
+.inProgressContainer p,
+.doneContainer p {
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+button {
+    padding: 13px;
+    background: #adf2fb75;
+    color: black;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.taskCard {
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.taskActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.taskActions button {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+    background: #e0f2fe;
+}
+
+.taskActions button:last-child {
+    margin-left: auto;
+    background: #fecaca;
+}
+
+.todoContainer,
+.inProgressContainer,
+.doneContainer {
+    padding: 16px;
+    border-radius: 12px;
+    min-height: 250px;
+}
