@@ -70,22 +70,34 @@
 .todoContainer,
 .inProgressContainer,
 .doneContainer {
-    padding: 12px;
-    border-radius: 8px;
-    min-height: 150px;
+    padding: 16px;
+    border-radius: 12px;
+    min-height: 250px;
+    position: relative;
+}
+
+.todoContainer h2,
+.inProgressContainer h2,
+.doneContainer h2 {
+    margin-bottom: 12px;
+    color: #333;
+    font-size: 16px;
 }
 
 /* Individual column colors */
 .todoContainer {
     background: #f1f5f9;
+    border: 2px solid #cbd5e1;
 }
 
 .inProgressContainer {
     background: #fff7ed;
+    border: 2px solid #fed7aa;
 }
 
 .doneContainer {
     background: #ecfdf5;
+    border: 2px solid #86efac;
 }
 
 /* Task item */
@@ -116,24 +128,55 @@ button {
     border-radius: 10px;
     margin-bottom: 14px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    cursor: grab;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+    display: flex;
+}
+
+
+.taskCard:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.taskCard:active {
+    cursor: grabbing;
+    opacity: 0.7;
+}
+
+.taskCard p {
+    margin: 0 0 8px 0;
+    color: #1f2937;
+    font-size: 14px;
+    word-break: break-word;
 }
 
 .taskActions {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
 }
 
 .taskActions button {
-    padding: 6px 12px;
+    padding: 6px 10px;
     font-size: 13px;
-    border-radius: 8px;
-    background: #e0f2fe;
+    border-radius: 6px;
+    background: #fecaca;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-.taskActions button:last-child {
-    margin-left: auto;
-    background: #fecaca;
+.deleteBtn {
+    background: #fecaca !important;
+    color: #7f1d1d;
+    font-weight: bold;
+}
+
+.deleteBtn:hover {
+    background: #fca5a5 !important;
 }
 
 .todoContainer,

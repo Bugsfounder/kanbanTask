@@ -1,10 +1,35 @@
 import { useState } from "react";
+import {
+  DndContext,
+  closestCorners,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import "./App.css";
+import DroppableContainer from "./components/DroppableContainer";
+import DraggableTask from "./components/DraggableTask";
 
 function App() {
   const [taskText, setTaskText] = useState("");
   const [taskType, setTaskType] = useState("todo");
   const [tasks, setTasks] = useState([]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      distance: 8,
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   function addTask() {
     if (taskText.trim() === "") return;
@@ -24,41 +49,50 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== id));
   }
 
-  function moveTask(id, newStatus) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, status: newStatus } : task,
-      ),
-    );
+  function handleDragEnd(event) {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const activeTask = tasks.find((task) => task.id === parseInt(active.id));
+    const overTaskId = parseInt(over.id);
+    const overTask = tasks.find((task) => task.id === overTaskId);
+
+    if (!activeTask || !overTask) {
+      // Moving to a different container
+      const newStatus = over.id;
+
+      setTasks(
+        tasks.map((task) =>
+          task.id === parseInt(active.id)
+            ? { ...task, status: newStatus }
+            : task,
+        ),
+      );
+      return;
+    }
+
+    // Reordering within same container
+    if (activeTask.status === overTask.status) {
+      const activeIndex = tasks.findIndex((t) => t.id === parseInt(active.id));
+      const overIndex = tasks.findIndex((t) => t.id === overTaskId);
+
+      setTasks(arrayMove(tasks, activeIndex, overIndex));
+    } else {
+      // Moving to different container
+      setTasks(
+        tasks.map((task) =>
+          task.id === parseInt(active.id)
+            ? { ...task, status: overTask.status }
+            : task,
+        ),
+      );
+    }
   }
 
-  function renderTasks(status) {
-    return tasks
-      .filter((task) => task.status === status)
-      .map((task) => (
-        <div key={task.id} className="taskCard">
-          <p>{task.text}</p>
-
-          <div className="taskActions">
-            {status !== "todo" && (
-              <button onClick={() => moveTask(task.id, "todo")}>To Do</button>
-            )}
-
-            {status !== "inprogress" && (
-              <button onClick={() => moveTask(task.id, "inprogress")}>
-                In Progress
-              </button>
-            )}
-
-            {status !== "done" && (
-              <button onClick={() => moveTask(task.id, "done")}>Done</button>
-            )}
-
-            <button onClick={() => deleteTask(task.id)}>X</button>
-          </div>
-        </div>
-      ));
-  }
+  const todoTasks = tasks.filter((task) => task.status === "todo");
+  const inProgressTasks = tasks.filter((task) => task.status === "inprogress");
+  const doneTasks = tasks.filter((task) => task.status === "done");
 
   return (
     <>
@@ -74,6 +108,7 @@ function App() {
               placeholder="Enter task"
               value={taskText}
               onChange={(e) => setTaskText(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && addTask()}
             />
           </div>
 
@@ -93,13 +128,58 @@ function App() {
         </div>
 
         {/* Board */}
-        <div className="taskTypeContainer">
-          <div className="todoContainer">{renderTasks("todo")}</div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="taskTypeContainer">
+            <DroppableContainer id="todo" title="To Do">
+              <SortableContext
+                items={todoTasks.map((t) => t.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {todoTasks.map((task) => (
+                  <DraggableTask
+                    key={task.id}
+                    task={task}
+                    onDelete={deleteTask}
+                  />
+                ))}
+              </SortableContext>
+            </DroppableContainer>
 
-          <div className="inProgressContainer">{renderTasks("inprogress")}</div>
+            <DroppableContainer id="inprogress" title="In Progress">
+              <SortableContext
+                items={inProgressTasks.map((t) => t.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {inProgressTasks.map((task) => (
+                  <DraggableTask
+                    key={task.id}
+                    task={task}
+                    onDelete={deleteTask}
+                  />
+                ))}
+              </SortableContext>
+            </DroppableContainer>
 
-          <div className="doneContainer">{renderTasks("done")}</div>
-        </div>
+            <DroppableContainer id="done" title="Done">
+              <SortableContext
+                items={doneTasks.map((t) => t.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {doneTasks.map((task) => (
+                  <DraggableTask
+                    key={task.id}
+                    task={task}
+                    onDelete={deleteTask}
+                  />
+                ))}
+              </SortableContext>
+            </DroppableContainer>
+          </div>
+        </DndContext>
       </div>
     </>
   );

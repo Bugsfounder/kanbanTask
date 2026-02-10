@@ -1,0 +1,5 @@
+how to create react app with vite
+what is dnd-kit
+what to use dnd-kit or react-beautiful-dnd.
+    -> react-beautiful-dnd is depricated so i've used dnd-kit
+how to deploye on vercel
