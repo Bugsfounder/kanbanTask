@@ -1,73 +1,94 @@
-# React + TypeScript + Vite
+# Kanban Task Board
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Trello-like Kanban Task Board built with React, TypeScript, and Vite.
+## Versel Deploy link
+[vercel](https://https://kanban-task-cc67.vercel.app//)
+![App Screenshot](public/dashboard.png)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Goal
 
-## React Compiler
+This project demonstrates React component patterns, state management (`useState`), props, and progressively adds polish and professional features (editing, priority, persistence, drag-and-drop, and filtering).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features (by difficulty)
 
-## Expanding the ESLint configuration
+- **Level 1 — Core Logic (required)**
+	- Create project with Vite.
+	- Three columns: To Do, In Progress, Done.
+	- Add Task (input): creates card in To Do.
+	- Delete Task: `X` button on each card.
+	- Move Task: simple buttons to move between columns.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Level 2 — Polish (recommended)**
+	- Inline Editing: click task text to edit and save.
+	- Priority: dropdown when creating tasks (High / Medium / Low).
+		- High → red border, Medium → yellow border, Low → green border.
+	- Persistence: save tasks to `localStorage` so they survive refresh.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Level 3 — Professional (optional)**
+	- Drag & Drop: integrate `dnd-kit` or `react-beautiful-dnd` to drag cards between columns.
+	- Smooth interactions and accessibility improvements.
+	- Filter / Search bar to filter tasks by title.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Quick Start
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Install dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Run development server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+3. Build for production
+
+```bash
+npm run build
+```
+
+4. Preview production build
+
+```bash
+npm run preview
+```
+
+## Project Structure (important files)
+
+```
+public/
+	└─ screenshot.png   # add your screenshot here
+src/
+	├─ components/
+	|   ├─ DraggableTask.tsx
+	|   └─ DroppableContainer.tsx
+	├─ App.tsx
+	├─ main.tsx
+	└─ index.css
+index.html
+package.json
+vite.config.ts
+tsconfig.json
+eslint.config.js
+```
+
+## Implementation Notes
+
+- State: use `useState` for task lists; consider structuring tasks as objects { id, title, column, priority }.
+- Persistence: use `localStorage` (serialize with `JSON.stringify`) and initialize state from it on app load.
+- Editing: toggle an `isEditing` mode per task and render an `<input>` when active.
+- Priority styling: apply border color classes based on the task's priority.
+
+![App Screenshot](public/tasks.png)
+
+## Libraries and Recommendations
+
+- For drag-and-drop, `dnd-kit` is modern and lightweight; `react-beautiful-dnd` is feature-rich but heavier.
+- Keep components small and focused: e.g., `DraggableTask` (single card) and `DroppableContainer` (column).
+
+
+## App link
+[vercel](https://https://kanban-task-cc67.vercel.app//)
