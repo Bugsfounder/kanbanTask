@@ -2,7 +2,7 @@
 
 A Trello-like Kanban Task Board built with React, TypeScript, and Vite.
 ## Versel Deploy link
-[vercel](https://https://kanban-task-cc67.vercel.app//)
+[vercel](https://kanban-task-cc67.vercel.app/)
 ![App Screenshot](public/dashboard.png)
 
 
@@ -91,4 +91,4 @@ eslint.config.js
 
 
 ## App link
-[vercel](https://https://kanban-task-cc67.vercel.app//)
+[vercel](https://kanban-task-cc67.vercel.app/)
